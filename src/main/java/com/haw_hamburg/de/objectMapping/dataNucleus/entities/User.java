@@ -12,17 +12,21 @@ import javax.jdo.annotations.PrimaryKey;
 
 @PersistenceCapable
 public class User {
-//	
-//	@PrimaryKey
-//	@Persistent(valueStrategy=IdGeneratorStrategy.INCREMENT)
+	
+	@PrimaryKey
+	@Persistent(valueStrategy=IdGeneratorStrategy.INCREMENT)
 	private String id;
 
 	private String firstName;
 	private String lastName;
-
+	
+	private LoginData loginData;
+	
 	private Set<Post> userPosts = new HashSet<>();
 	
-	private List<Comment> userComments;
+	private Set<Comment> userComments = new HashSet<>();
+	
+	private List<Discussion> discussions;
 
 	// constructors, getters and setters...
 
@@ -66,12 +70,28 @@ public class User {
 		this.userPosts = userPosts;
 	}
 	
-	public List<Comment> getUserComments() {
+	public Set<com.haw_hamburg.de.objectMapping.dataNucleus.entities.Comment> getUserComments() {
 		return userComments;
 	}
 
-	public void setUserComments(List<Comment> userComments) {
+	public void setUserComments(Set<com.haw_hamburg.de.objectMapping.dataNucleus.entities.Comment> userComments) {
 		this.userComments = userComments;
+	}
+
+	public LoginData getLoginData() {
+		return loginData;
+	}
+
+	public void setLoginData(LoginData loginData) {
+		this.loginData = loginData;
+	}
+
+	public List<Discussion> getDiscussions() {
+		return discussions;
+	}
+
+	public void setDiscussions(List<Discussion> discussions) {
+		this.discussions = discussions;
 	}
 
 }
