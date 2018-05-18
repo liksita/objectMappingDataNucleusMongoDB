@@ -35,12 +35,12 @@
 		<dependency>
 			<groupId>org.datanucleus</groupId>
 			<artifactId>datanucleus-core</artifactId>
-			<version>5.1.6</version>
+			<version>5.1.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.datanucleus</groupId>
 			<artifactId>datanucleus-api-jdo</artifactId>
-			<version>5.1.4</version>
+			<version>5.1.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.datanucleus</groupId>
@@ -78,7 +78,7 @@
 				</configuration>
 			</plugin>
 			<!-- data nucleus -->
-			<plugin>
+<!-- 			<plugin>
 				<groupId>org.datanucleus</groupId>
 				<artifactId>datanucleus-maven-plugin</artifactId>
 				<version>5.0.2</version>
@@ -96,7 +96,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>

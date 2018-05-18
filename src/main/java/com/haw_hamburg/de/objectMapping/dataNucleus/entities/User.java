@@ -1,10 +1,9 @@
 package com.haw_hamburg.de.objectMapping.dataNucleus.entities;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.Join;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -14,7 +13,7 @@ import javax.jdo.annotations.PrimaryKey;
 public class User {
 	
 	@PrimaryKey
-	@Persistent(valueStrategy=IdGeneratorStrategy.INCREMENT)
+	@Persistent(customValueStrategy="uuid")
 	private String id;
 
 	private String firstName;
@@ -22,11 +21,14 @@ public class User {
 	
 	private LoginData loginData;
 	
+	@Join(table="Post")
 	private Set<Post> userPosts = new HashSet<>();
 	
+	@Join(table="Comment")
 	private Set<Comment> userComments = new HashSet<>();
 	
-	private List<Discussion> discussions;
+	@Join(table="Discussion")
+	private Set<Discussion> discussions = new HashSet<>();
 
 	// constructors, getters and setters...
 
@@ -38,13 +40,13 @@ public class User {
 		this.lastName = lastName;
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
+//	public String getId() {
+//		return id;
+//	}
+//
+//	public void setId(String id) {
+//		this.id = id;
+//	}
 
 	public String getFirstName() {
 		return firstName;
@@ -86,11 +88,11 @@ public class User {
 		this.loginData = loginData;
 	}
 
-	public List<Discussion> getDiscussions() {
+	public Set<Discussion> getDiscussions() {
 		return discussions;
 	}
 
-	public void setDiscussions(List<Discussion> discussions) {
+	public void setDiscussions(Set<Discussion> discussions) {
 		this.discussions = discussions;
 	}
 

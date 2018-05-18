@@ -62,8 +62,15 @@ public class MongoHibernate {
 				Discussion discussion1 = new Discussion("discussion1" + runCount + j);
 				Discussion discussion2 = new Discussion("discussion2" + runCount + j);
 
-				discussion1.setUsers(Arrays.asList(user1, user2));
-				discussion2.setUsers(Arrays.asList(user1, user2));
+				discussion1.getUsers().add(user1);
+				discussion1.getUsers().add(user2);
+				user1.getDiscussions().add(discussion1);
+				user1.getDiscussions().add(discussion2);
+				
+				discussion2.getUsers().add(user1);
+				discussion2.getUsers().add(user2);
+				user2.getDiscussions().add(discussion2);
+				user2.getDiscussions().add(discussion1);
 
 				// and three posts
 				Post post1 = new Post("Title1 " + runCount + j, new Date());
@@ -100,6 +107,7 @@ public class MongoHibernate {
 				pm.makePersistent(user2);
 				pm.makePersistent(discussion1);
 				pm.makePersistent(discussion2);
+
 //				pm.makeTransient(user);
 				tx.commit();
 			} finally {

@@ -1,8 +1,9 @@
 package com.haw_hamburg.de.objectMapping.dataNucleus.entities;
 
 import javax.jdo.annotations.EmbeddedOnly;
+import javax.jdo.annotations.PersistenceCapable;
 
-@EmbeddedOnly
+@PersistenceCapable(embeddedOnly="true")
 public class LoginData {
 
 	private String id;

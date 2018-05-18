@@ -7,7 +7,7 @@ public class Main
     public static void main( String[] args )
     {
 //		 MongoDB
-		FrameworkTest mongodb = new FrameworkTest(1, 1);
+		FrameworkTest mongodb = new FrameworkTest(500, 3);
 		try {
 			mongodb.performWriteTest().printMeasureResult();
 		} catch (Exception e) {
@@ -16,3 +16,4 @@ public class Main
 		}
     }
 }
+

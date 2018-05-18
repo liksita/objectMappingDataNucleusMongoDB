@@ -2,11 +2,18 @@ package com.haw_hamburg.de.objectMapping.dataNucleus.entities;
 
 import java.util.Date;
 
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.Inheritance;
 import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 
 @PersistenceCapable
+@Inheritance(strategy=javax.jdo.annotations.InheritanceStrategy.SUBCLASS_TABLE)
 public abstract class Activity {
-	
+
+	@PrimaryKey
+	@Persistent(customValueStrategy="uuid")
 	String id;
 
 	Date date;

@@ -10,6 +10,9 @@
 		<class>com.haw_hamburg.de.objectMapping.dataNucleus.entities.User</class>
 		<class>com.haw_hamburg.de.objectMapping.dataNucleus.entities.Post</class>
 		<class>com.haw_hamburg.de.objectMapping.dataNucleus.entities.Comment</class>
+		<class>com.haw_hamburg.de.objectMapping.dataNucleus.entities.Activity</class>
+		<class>com.haw_hamburg.de.objectMapping.dataNucleus.entities.LoginData</class>
+		<class>com.haw_hamburg.de.objectMapping.dataNucleus.entities.Discussion</class>
 		<exclude-unlisted-classes />
 		<properties>
 			<property name="javax.jdo.option.ConnectionURL" value="mongodb:/UserPosts" />
