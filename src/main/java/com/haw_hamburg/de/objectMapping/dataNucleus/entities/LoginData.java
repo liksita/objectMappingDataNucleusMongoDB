@@ -7,7 +7,6 @@ import javax.jdo.annotations.PersistenceCapable;
 public class LoginData {
 
 	private String id;
-
 	private String username;
 	private String password;
 

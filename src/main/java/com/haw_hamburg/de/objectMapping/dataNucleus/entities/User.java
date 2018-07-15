@@ -9,11 +9,12 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 
+
 @PersistenceCapable
 public class User {
 	
 	@PrimaryKey
-	@Persistent(customValueStrategy="uuid")
+	@Persistent(customValueStrategy="identity")
 	private String id;
 
 	private String firstName;

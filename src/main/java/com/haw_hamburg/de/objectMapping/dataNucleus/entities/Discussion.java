@@ -3,12 +3,16 @@ package com.haw_hamburg.de.objectMapping.dataNucleus.entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.jdo.annotations.DatastoreIdentity;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.Join;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-@PersistenceCapable
+@PersistenceCapable(identityType=IdentityType.DATASTORE)
+@DatastoreIdentity(strategy=IdGeneratorStrategy.IDENTITY)
 public class Discussion {
 
 	@PrimaryKey
@@ -23,7 +27,7 @@ public class Discussion {
 	public Discussion(String topic) {
 		this.topic = topic;
 	}
-
+	
 	public String getId() {
 		return id;
 	}

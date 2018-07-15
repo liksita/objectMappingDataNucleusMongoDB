@@ -110,7 +110,7 @@ public class FrameworkTest {
 		}
 
 		// Delete Test Environment
-		// deleteTestEnvironment();
+		 //deleteTestEnvironment();
 
 		// Print Result
 		return this.result;

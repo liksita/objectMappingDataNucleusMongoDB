@@ -33,13 +33,13 @@ public class MongoHibernate {
 		properties.setProperty("javax.jdo.PersistenceManagerFactoryClass", "org.datanucleus.api.jdo.JDOPersistenceManagerFactory");
 		properties.setProperty("javax.jdo.option.ConnectionURL","mongodb:/UserPosts");
 		pmf = JDOHelper.getPersistenceManagerFactory(properties);
-		
+		pm = pmf.getPersistenceManager();
 		
 	}
 
 
 	public void persistEntitiesDataNucleus() {
-		pm = pmf.getPersistenceManager();
+		
 		runCount++;
 
 		for (int j = 0; j < this.inserts; j++) {
@@ -103,8 +103,8 @@ public class MongoHibernate {
 				post3.setAuthor(user2);
 				user2.getUserPosts().add(post3);
 
-				pm.makePersistent(user1);
-				pm.makePersistent(user2);
+//				pm.makePersistent(user1);
+//				pm.makePersistent(user2);
 				pm.makePersistent(discussion1);
 				pm.makePersistent(discussion2);
 
