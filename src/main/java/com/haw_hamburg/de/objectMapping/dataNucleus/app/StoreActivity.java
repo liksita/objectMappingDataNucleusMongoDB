@@ -1,10 +1,7 @@
 package com.haw_hamburg.de.objectMapping.dataNucleus.app;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.Properties;
 
-import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Transaction;
@@ -15,31 +12,22 @@ import com.haw_hamburg.de.objectMapping.dataNucleus.entities.LoginData;
 import com.haw_hamburg.de.objectMapping.dataNucleus.entities.Post;
 import com.haw_hamburg.de.objectMapping.dataNucleus.entities.User;
 
-public class MongoHibernate {
+public class StoreActivity {
 
 	// Testkonfig
 	public Integer inserts = 1000;
 
 	private static int runCount = 0;
-
-
-	PersistenceManagerFactory pmf;
 	PersistenceManager pm;
 
-	public MongoHibernate(Integer inserts) {
+	public StoreActivity(Integer inserts, PersistenceManagerFactory persistenceManagerFactory) {
 		this.inserts = inserts;
-		
-		Properties properties = new Properties();
-		properties.setProperty("javax.jdo.PersistenceManagerFactoryClass", "org.datanucleus.api.jdo.JDOPersistenceManagerFactory");
-		properties.setProperty("javax.jdo.option.ConnectionURL","mongodb:/UserPosts");
-		pmf = JDOHelper.getPersistenceManagerFactory(properties);
-		pm = pmf.getPersistenceManager();
-		
+		pm = persistenceManagerFactory.getPersistenceManager();
+
 	}
 
-
 	public void persistEntitiesDataNucleus() {
-		
+
 		runCount++;
 
 		for (int j = 0; j < this.inserts; j++) {
@@ -66,7 +54,7 @@ public class MongoHibernate {
 				discussion1.getUsers().add(user2);
 				user1.getDiscussions().add(discussion1);
 				user1.getDiscussions().add(discussion2);
-				
+
 				discussion2.getUsers().add(user1);
 				discussion2.getUsers().add(user2);
 				user2.getDiscussions().add(discussion2);
@@ -103,21 +91,17 @@ public class MongoHibernate {
 				post3.setAuthor(user2);
 				user2.getUserPosts().add(post3);
 
-//				pm.makePersistent(user1);
-//				pm.makePersistent(user2);
 				pm.makePersistent(discussion1);
 				pm.makePersistent(discussion2);
 
-//				pm.makeTransient(user);
 				tx.commit();
 			} finally {
 				if (tx.isActive()) {
 					tx.rollback();
 				}
-				
+
 			}
 		}
-		pm.close();
 	}
 
 	public Integer getInserts() {
@@ -129,10 +113,7 @@ public class MongoHibernate {
 	}
 
 	public void closeConnection() {
-//		entityManager.close();
-//		entityManagerFactory.close();
 		pm.close();
-		pmf.close();
 	}
 
 }

@@ -1,6 +1,5 @@
 package com.haw_hamburg.de.objectMapping.dataNucleus.entities;
 
-import javax.jdo.annotations.EmbeddedOnly;
 import javax.jdo.annotations.PersistenceCapable;
 
 @PersistenceCapable(embeddedOnly="true")

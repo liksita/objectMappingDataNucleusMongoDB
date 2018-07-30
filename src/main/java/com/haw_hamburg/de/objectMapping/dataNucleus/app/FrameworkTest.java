@@ -1,19 +1,21 @@
 package com.haw_hamburg.de.objectMapping.dataNucleus.app;
 
 import java.net.UnknownHostException;
+import java.util.Properties;
 
+import javax.jdo.JDOHelper;
+import javax.jdo.PersistenceManagerFactory;
 import com.haw_hamburg.de.objectMapping.utils.Result;
-import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
-import com.mongodb.ReadPreference;
 import com.mongodb.ServerAddress;
 
 public class FrameworkTest {
 
 	// Result Object
-	private Result result;
+	private Result resultWrite;
+	private Result resultRead;
 
 	// Node and Port Config
 	private String node = "localhost";
@@ -46,7 +48,12 @@ public class FrameworkTest {
 	public Integer inserts = 100000;
 	public Integer runs = 5;
 
-	MongoHibernate mh;
+	StoreActivity storeActivity;
+	ReadActivity readActivity;
+	// Persistence Manager Factory
+	private PersistenceManagerFactory persistenceManagerFactory;
+
+	Properties properties = new Properties();
 
 	public FrameworkTest() {
 
@@ -55,7 +62,12 @@ public class FrameworkTest {
 	public FrameworkTest(Integer inserts, Integer runs) {
 		this.inserts = inserts;
 		this.runs = runs;
-		mh = new MongoHibernate(inserts);
+		properties.setProperty("javax.jdo.PersistenceManagerFactoryClass",
+				"org.datanucleus.api.jdo.JDOPersistenceManagerFactory");
+		properties.setProperty("javax.jdo.option.ConnectionURL", "mongodb:/UserPosts");
+		persistenceManagerFactory = JDOHelper.getPersistenceManagerFactory(properties);
+		storeActivity = new StoreActivity(inserts, persistenceManagerFactory);
+		readActivity = new ReadActivity(persistenceManagerFactory);
 	}
 
 	public Integer getInserts() {
@@ -80,13 +92,12 @@ public class FrameworkTest {
 	}
 
 	public Result performWriteTest() throws Exception {
-
+		//
 		// Intialize Variables
-		this.result = new Result();
+		this.resultWrite = new Result();
 
 		// Create Test Environment
 		createTestEnvironment();
-
 		// Execute Runs
 		for (Integer i = 0; i < this.runs; i++) {
 
@@ -94,29 +105,25 @@ public class FrameworkTest {
 			long startTime = System.nanoTime();
 
 			// Insert Documents
-			// mh.persistEntities();
-			mh.persistEntitiesDataNucleus();
-
-			// Print Count
-			printCount();
+			storeActivity.persistEntitiesDataNucleus();
 
 			// Record End Time and calculate Run Time
 			long estimatedTime = System.nanoTime() - startTime;
 			double seconds = (double) estimatedTime / 1000000000.0;
 
-			result.addMeasureResult("Run" + (i), seconds, this.inserts);
-			System.out.println("Run" + (i) + " finished");
+			printCount();
+
+			resultWrite.addMeasureResult("Write Run" + (i), seconds, this.inserts, true);
+			System.out.println("Write Run" + (i) + " finished");
 
 		}
-
-		// Delete Test Environment
-		 //deleteTestEnvironment();
+		storeActivity.closeConnection();
 
 		// Print Result
-		return this.result;
-
+		return this.resultWrite;
 	}
 
+	@SuppressWarnings("deprecation")
 	private void createTestEnvironment() throws Exception {
 
 		// Get URI
@@ -124,9 +131,6 @@ public class FrameworkTest {
 
 		// Connect to MongoDB Server
 		this.mongoClient = new MongoClient(addrs);
-
-		// Set Read Preference
-		this.mongoClient.setReadPreference(ReadPreference.secondary());
 
 		// Connect to Database (Creates the DB if it does not exist)
 		this.db = this.mongoClient.getDB(this.db_name);
@@ -143,6 +147,31 @@ public class FrameworkTest {
 
 	}
 
+	public Result performReadTest() throws Exception {
+		// Intialize Variables
+		this.resultRead = new Result();
+
+		// Record Start Time
+		long startTime = System.nanoTime();
+
+		// Read Documents
+		readActivity.readEntities();
+
+		// Record End Time and calculate Run Time
+		long estimatedTime = System.nanoTime() - startTime;
+		double seconds = (double) estimatedTime / 1000000000.0;
+
+		resultRead.addMeasureResult("Read All Entries", seconds, this.inserts * this.runs, false);
+		//
+		// }
+		this.readActivity.closeConnection();
+		deleteTestEnvironment();
+		persistenceManagerFactory.close();
+
+		// Print Result
+		return this.resultRead;
+	}
+
 	private void deleteTestEnvironment() {
 
 		// Delete Connection
@@ -150,20 +179,9 @@ public class FrameworkTest {
 		this.db.getCollection(this.collection_post_name).drop();
 		this.db.getCollection(this.collection_comment_name).drop();
 		this.db.getCollection(this.collection_discussion_name).drop();
-		this.mh.closeConnection();
+		this.storeActivity.closeConnection();
 
 	}
-
-	// private void insertDocuments() {
-	// for (int i = 0; i < this.inserts; i++) {
-	// try {
-	// this.collection.insert(new BasicDBObject(String.valueOf(i), "test"));
-	// } catch (Exception e) {
-	// System.out.println("Error on inserting element: " + i);
-	// e.printStackTrace();
-	// }
-	// }
-	// }
 
 	private void printCount() {
 		System.out.println("Count users " + this.collection_user.find().count());
