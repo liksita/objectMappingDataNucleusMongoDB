@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.jdo.annotations.Join;
 import javax.jdo.annotations.PersistenceCapable;
 
 @PersistenceCapable
@@ -52,7 +51,6 @@ public class Post extends Activity {
 		this.author = author;
 	}
 
-	@Join(table="Comment")
 	public Set<Comment> getUserComments() {
 		return userComments;
 	}

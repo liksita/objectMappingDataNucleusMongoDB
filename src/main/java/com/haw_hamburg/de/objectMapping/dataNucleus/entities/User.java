@@ -3,7 +3,6 @@ package com.haw_hamburg.de.objectMapping.dataNucleus.entities;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.jdo.annotations.Join;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -14,7 +13,7 @@ import javax.jdo.annotations.PrimaryKey;
 public class User {
 	
 	@PrimaryKey
-	@Persistent(customValueStrategy="identity")
+	@Persistent(customValueStrategy="uuid")
 	private String id;
 
 	private String firstName;
@@ -22,13 +21,10 @@ public class User {
 	
 	private LoginData loginData;
 	
-	@Join(table="Post")
 	private Set<Post> userPosts = new HashSet<>();
 	
-	@Join(table="Comment")
 	private Set<Comment> userComments = new HashSet<>();
 	
-	@Join(table="Discussion")
 	private Set<Discussion> discussions = new HashSet<>();
 
 	// constructors, getters and setters...

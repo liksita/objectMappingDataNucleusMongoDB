@@ -6,7 +6,6 @@ import java.util.Set;
 import javax.jdo.annotations.DatastoreIdentity;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.Join;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -21,7 +20,6 @@ public class Discussion {
 
 	private String topic;
 
-	@Join(table = "User")
 	private Set<User> users = new HashSet<>();
 
 	public Discussion(String topic) {
