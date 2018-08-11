@@ -14,7 +14,7 @@ import com.haw_hamburg.de.objectMapping.dataNucleus.entities.Post;
 import com.haw_hamburg.de.objectMapping.dataNucleus.entities.User;
 
 public class ReadActivity {
-	
+
 	private List<User> users;
 	private List<Post> posts;
 	private List<Comment> comments;
@@ -42,6 +42,27 @@ public class ReadActivity {
 				.newQuery("SELECT FROM com.haw_hamburg.de.objectMapping.dataNucleus.entities.Discussion ");
 		discussions = queryDiscussions.executeList();
 		persistenceManager.currentTransaction().commit();
+
+	}
+
+	public void readUsers() {
+		persistenceManager.currentTransaction().begin();
+		Query<User> queryUsers = persistenceManager.newQuery(
+				"SELECT FROM com.haw_hamburg.de.objectMapping.dataNucleus.entities.User WHERE firstName == 'user1' ");
+		users = queryUsers.executeList();
+		// Query<Post> queryPosts = persistenceManager
+		// .newQuery("SELECT FROM
+		// com.haw_hamburg.de.objectMapping.dataNucleus.entities.Post ");
+		// posts = queryPosts.executeList();
+		// Query<Comment> queryComments = persistenceManager
+		// .newQuery("SELECT FROM
+		// com.haw_hamburg.de.objectMapping.dataNucleus.entities.Comment ");
+		// comments = queryComments.executeList();
+		// Query<Discussion> queryDiscussions = persistenceManager
+		// .newQuery("SELECT FROM
+		// com.haw_hamburg.de.objectMapping.dataNucleus.entities.Discussion ");
+		// discussions = queryDiscussions.executeList();
+		// persistenceManager.currentTransaction().commit();
 
 	}
 
